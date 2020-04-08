@@ -89,7 +89,7 @@ void
 rte_flow_item_dump(FILE *f,
 		   const struct rte_flow_item *pattern)
 {
-	fprintf(f, "%s\n",
+	fprintf(f, "%d (%s)\n", pattern->type,
 		rte_flow_item_names[pattern->type]);
 
 	switch (pattern->type) {
