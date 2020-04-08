@@ -149,12 +149,8 @@ static const struct rte_flow_item_ipv4 ipv4_any_addr = {
 static void flow_configure(uint16_t portid, uint16_t id, uint16_t q,
 			   uint16_t udp_port)
 {
-	/*
-	 * All matches are equal priority.
-	 * Assign flow group based on id.
-	 */
 	struct rte_flow_attr attr = {
-		.group = id + 1,
+		.group = 0,
 		.priority = 1,
 		.ingress = 1,
 	};
