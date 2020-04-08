@@ -9,19 +9,26 @@
  *    udp-demo EAL_args -- [OPTIONS] PORTS
  */
 
-#include <stdio.h>
-#include <stdbool.h>
-#include <signal.h>
-#include <unistd.h>
-#include <getopt.h>
+#include <getopt.h>                      // for getopt_long, no_argument
+#include <inttypes.h>                    // for PRIu64, PRId64
+#include <signal.h>                      // for signal, SIGINT, SIGTERM
+#include <stdbool.h>                     // for bool, false, true
+#include <stdint.h>                      // for UINT16_MAX
+#include <stdio.h>                       // for printf, NULL, fflush, fprintf
+#include <stdlib.h>                      // for EXIT_FAILURE, calloc, exit
+#include <sys/time.h>                    // for CLOCK_MONOTONIC
+#include <time.h>                        // for clock_gettime
 
-#include <rte_ethdev.h>
-#include <rte_ether.h>
-#include <rte_mbuf.h>
-#include <rte_flow.h>
-#include <rte_lcore.h>
-#include <rte_timer.h>
-#include <rte_cycles.h>
+#include <rte_common.h>                  // for rte_exit, rte_align32pow2
+#include <rte_ethdev.h>                  // for rte_eth_dev_info, ETH_MQ_RX_...
+#include <rte_ether.h>                   // for rte_ether_format_addr, RTE_E...
+#include <rte_flow.h>                    // for RTE_FLOW_ACTION_TYPE_END
+#include <rte_lcore.h>                   // for rte_lcore_count, rte_get_mas...
+#include <rte_mbuf.h>                    // for rte_pktmbuf_free, rte_pktmbu...
+#include <rte_timer.h>                   // for rte_timer_init, rte_timer_ma...
+#include <rte_eal.h>                     // for rte_eal_cleanup, rte_eal_init
+#include <rte_errno.h>                   // for rte_strerror, per_lcore__rte...
+#include <rte_mempool.h>                 // for rte_mempool_calc_obj_size
 
 #include "rte_flow_dump.h"
 #include "pkt_dump.h"
