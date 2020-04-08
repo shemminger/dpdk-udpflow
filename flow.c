@@ -152,6 +152,14 @@ static const struct rte_flow_item_ipv4 ipv4_any_addr = {
 	}
 };
 
+static const struct rte_flow_item_eth eth_proto_mask = {
+	.type = RTE_BE16(0xffff),
+};
+
+static const struct rte_flow_item_eth eth_proto_ipv4 = {
+	.type = RTE_BE16(RTE_ETHER_TYPE_IPV4),
+};
+
 /* Configure a queue to match a particular UDP port */
 static void flow_configure(uint16_t portid, uint16_t id, uint16_t q,
 			   uint16_t udp_port)
@@ -165,6 +173,11 @@ static void flow_configure(uint16_t portid, uint16_t id, uint16_t q,
 		.hdr.dst_port = RTE_BE16(udp_port),
 	};
 	struct rte_flow_item patterns[] = {
+		{
+			.type = RTE_FLOW_ITEM_TYPE_ETH,
+			.mask = &eth_proto_mask,
+			.spec = &eth_proto_ipv4,
+		},
 		{
 			.type = RTE_FLOW_ITEM_TYPE_IPV4,
 			.mask = &ipv4_any_addr,
