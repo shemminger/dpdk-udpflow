@@ -205,11 +205,18 @@ static void flow_configure(uint16_t portid, uint16_t id, uint16_t q,
 	};
 	struct rte_flow_error err;
 
-	printf("Creating flow %u [%u] with queue %u\n", id, udp_port, q);
-
-	if (flow_dump)
+	if (flow_dump) {
+		int ret;
 		rte_flow_dump(stdout, &attr, patterns, actions);
 
+		ret = rte_flow_validate(portid, &attr, patterns, actions, &err);
+		if (ret != 0)
+			rte_exit(EXIT_FAILURE,
+				 "flow validate failed: %s\n error type %u %s\n",
+				 rte_strerror(-ret), err.type, err.message);
+	}
+
+	printf("Creating flow %u [%u] with queue %u\n", id, udp_port, q);
 	if (rte_flow_create(portid, &attr, patterns, actions, &err) == NULL)
 		rte_exit(EXIT_FAILURE,
 			 "flow create failed: %s\n error type %u %s\n",
